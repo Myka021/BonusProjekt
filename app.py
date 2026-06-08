@@ -29,7 +29,7 @@ def home():
         verbindung.close()
 
     #wir geben das gesucht wort und die gefundenen beiträge an html weiter
-    return render_template("index.html", benutzer_suche = suche, post = ergebnisse)
+    return render_template("index.html", benutzer_suche = suche, posts = ergebnisse)
     
 
 if __name__ == "__main__":
