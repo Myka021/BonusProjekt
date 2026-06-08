@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Unser unsicherer Blog</title>
+</head>
+<body>
+    <h1>Willkommen im IT-Security Blog</h1>
+    <p>Suche nach Beiträgen im Titel:</p>
+    
+    <form action="/" method="GET">
+        <input type="text" name="suchbegriff" placeholder="Suchbegriff eingeben...">
+        <button type="submit">Suchen</button>
+    </form>
+
+    {# Unsere alte XSS-Lücke #}
+    {% if benutzer_suche %}
+        <div style="margin-top: 20px; color: red;">
+            <h2>Sie haben gesucht nach: {{ benutzer_suche | safe }}</h2>
+        </div>
+    {% endif %}
+
+    {# Wir zeigen die Ergebnisse aus der Datenbank an #}
+    {% if posts %}
+        <div style="margin-top: 20px; border-top: 1px solid black; padding-top: 10px;">
+            <h3>Suchergebnisse:</h3>
+            <ul>
+                {# Eine Schleife, die jeden gefundenen Beitrag auf den Bildschirm druckt #}
+                {% for post in posts %}
+                    <li>
+                        <strong>{{ post[1] }}</strong> <p>{{ post[2] }}</p>         </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+</body>
+</html>

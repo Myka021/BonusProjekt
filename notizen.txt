@@ -1,0 +1,9 @@
+python
+weil es einsteiger freundich ist und ausserdem verlangt die aufgabetools
+die auch in python geschrieben werde können
+
+flask
+es ist ein werkzeug für python in dem man unter 10 zeilen eine webseite 
+ins netz stellen kann ohne sich um komplizierte hintergrundprozesse 
+kümmern zu müssen
+
