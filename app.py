@@ -48,5 +48,23 @@ def admin():
     # Lücke 3: Broken Access Control
     return render_template("admin.html")
 
+@app.route("/datei")
+def datei_lesen():
+    # HIER IST LÜCKE 6 (Path Traversal):
+    # Wir nehmen den Dateinamen aus der URL und öffnen die Datei blind.
+    # Ein Angreifer kann mit "../" aus dem Ordner ausbrechen!
+    dateiname = request.args.get("name")
+    
+    if dateiname:
+        try:
+            # Wir lesen die Datei ein und schicken sie an den Browser
+            with open(dateiname, "r") as datei:
+                inhalt = datei.read()
+            return f"<h3>Inhalt der Datei:</h3><pre>{inhalt}</pre><br><a href='/'>Zurück</a>"
+        except Exception as fehler:
+            return f"Fehler: Konnte Datei nicht lesen ({fehler})"
+            
+    return "Bitte hänge einen Dateinamen an die URL an, z.B. /datei?name=test.txt"
+
 if __name__ == "__main__":
     app.run(debug=True)
