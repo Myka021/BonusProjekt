@@ -35,7 +35,10 @@
             <ul>
                 {% for post in posts %}
                     <li style="margin-bottom: 15px;">
-                        <strong>{{ post[1] }}</strong>
+                        <strong>{{ post[1] }}</strong> 
+                        
+                        <a href="/?delete={{ post[0] }}" style="color: red; font-size: 12px; margin-left: 10px;">[Beitrag löschen]</a>
+                        
                         <p>{{ post[2] | safe }}</p>
                     </li>
                 {% endfor %}

@@ -3,18 +3,25 @@ import sqlite3
 
 app = Flask(__name__)
 
-# NEU: Wir erlauben jetzt GET (Suchen/Anzeigen) und POST (Daten empfangen)
 @app.route("/", methods=["GET", "POST"])
 def home():
     verbindung = sqlite3.connect('database.db')
     cursor = verbindung.cursor()
     
-    # NEU: Wenn ein neuer Beitrag gesendet wurde, speichern wir ihn direkt und ungeprüft ab
+    # Lücke 4: Stored XSS (Beitrag speichern)
     if request.method == "POST":
         neuer_titel = request.form.get("titel")
         neuer_inhalt = request.form.get("inhalt")
-        
         cursor.execute(f"INSERT INTO posts (title, content) VALUES ('{neuer_titel}', '{neuer_inhalt}')")
+        verbindung.commit()
+
+    # NEU: HIER IST LÜCKE 5 (IDOR)
+    # Wir prüfen ob in der URL "?delete=ID" steht
+    loeschen_id = request.args.get("delete")
+    if loeschen_id:
+        # Wir löschen die angegebene ID einfach ungeprüft aus der Datenbank!
+        # Kein Check, ob der Nutzer Admin ist oder ob ihm der Beitrag gehört.
+        cursor.execute(f"DELETE FROM posts WHERE id = {loeschen_id}")
         verbindung.commit()
 
     suche = request.args.get("suchbegriff")
@@ -29,7 +36,6 @@ def home():
         except sqlite3.Error as fehler:
             ergebnisse = [("FEHLER", f"Datenbank sagt: {fehler}", "")]
     else:
-        # Wenn nicht gesucht wird, zeigen wir einfach alle Beiträge an
         cursor.execute("SELECT * FROM posts")
         ergebnisse = cursor.fetchall()
         
