@@ -31,6 +31,12 @@ def home():
     #wir geben das gesucht wort und die gefundenen beiträge an html weiter
     return render_template("index.html", benutzer_suche = suche, posts = ergebnisse)
     
+@app.route("/admin")
+def admin():
+    # HIER IST DIE 3. LÜCKE (Broken Access Control):
+    # Ein sicherer Code würde hier prüfen: "Ist der User eingeloggt? Hat er das Passwort?"
+    # Wir machen das absichtlich NICHT. Wir lassen jeden rein, der die Adresse kennt!
+    return render_template("admin.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
