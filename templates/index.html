@@ -5,6 +5,15 @@
 </head>
 <body style="font-family: Arial; padding: 20px;">
     <h1>Willkommen im IT-Security Blog</h1>
+
+    <div style="background-color: #ffe6e6; padding: 10px; border: 1px solid red;">
+        <h3>Profilbild hochladen:</h3>
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <input type="file" name="datei" required>
+            <button type="submit">Bild hochladen</button>
+        </form>
+    </div>
+    <hr>
     
     <p>Suche nach Beiträgen im Titel:</p>
     <form action="/" method="GET">

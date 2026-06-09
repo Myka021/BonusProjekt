@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 import sqlite3
+import os
 
 app = Flask(__name__)
 
@@ -42,6 +43,24 @@ def home():
     verbindung.close()
 
     return render_template("index.html", benutzer_suche=suche, posts=ergebnisse)
+
+@app.route("/upload", methods=["POST"])
+def upload_file():
+    # HIER IST LÜCKE 7 (Unrestricted File Upload):
+    # Wir prüfen WEDER die Dateiendung (.jpg, .png) NOCH den Inhalt!
+    # Jeder kann einfach alles hochladen.
+    datei = request.files.get("datei")
+    if datei:
+        # Wir speichern die Datei blind in unserem neuen "uploads" Ordner
+        speicher_pfad = os.path.join("uploads", datei.filename)
+        datei.save(speicher_pfad)
+        return f"<h3>Datei erfolgreich hochgeladen!</h3> <a href='/uploads/{datei.filename}'>Klicke hier, um dein 'Bild' anzusehen</a> <br><br> <a href='/'>Zurück</a>"
+    return "Fehler beim Upload"
+
+# Diese Route sorgt dafür, dass man die hochgeladenen Dateien auch im Browser aufrufen kann
+@app.route("/uploads/<dateiname>")
+def zeige_datei(dateiname):
+    return send_from_directory("uploads", dateiname)
 
 @app.route("/admin")
 def admin():
