@@ -55,5 +55,14 @@
         </div>
     {% endif %}
 
+    <div style="background-color: #e6f7ff; padding: 10px; border: 1px solid blue; margin-top: 20px;">
+        <h3>🛠 Admin-Tool: Server-Ping</h3>
+        <p>Teste die Erreichbarkeit einer IP-Adresse (z.B. 127.0.0.1):</p>
+        <form action="/ping" method="POST">
+            <input type="text" name="ip" placeholder="IP eingeben..." required>
+            <button type="submit">Ping senden</button>
+        </form>
+    </div>
+
 </body>
 </html>

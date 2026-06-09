@@ -85,5 +85,21 @@ def datei_lesen():
             
     return "Bitte hänge einen Dateinamen an die URL an, z.B. /datei?name=test.txt"
 
+@app.route("/ping", methods=["POST"])
+def ping():
+    # HIER IST LÜCKE 8 (Command Injection):
+    # Wir nehmen die IP und kleben sie direkt in einen echten Terminal-Befehl.
+    # Wir prüfen NICHT, ob der Nutzer böse Sonderzeichen wie ";" mitschickt.
+    ip = request.form.get("ip")
+    befehl = f"ping -c 1 {ip}"
+    
+    try:
+        # os.popen öffnet das unsichtbare Mac-Terminal und feuert den Befehl ab!
+        ergebnis = os.popen(befehl).read()
+    except Exception as fehler:
+        ergebnis = f"Fehler: {fehler}"
+        
+    return f"<h3>Ping-Ergebnis:</h3><pre>{ergebnis}</pre><br><a href='/'>Zurück</a>"
+
 if __name__ == "__main__":
     app.run(debug=True)
